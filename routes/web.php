@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 
 use function Pest\Laravel\get;
@@ -32,7 +33,7 @@ Route::get('/users', function ()  {
         ]
             ]);
 });
-Route::get('/users/{id}', function ($id)  {
+Route::get('/user/{id}', function ($id)  {
     $users = [
         [
             'id' => 1,
@@ -45,8 +46,12 @@ Route::get('/users/{id}', function ($id)  {
             'age' =>   20
         ]
         ];
-        $user = Arr::first($users, fn($users) => $users['id'] == $id);
-        return view('users', ['user' => $user]);
+        // dd($id);
+        
+        $user = Arr::first($users, fn($user) => $user['id'] == $id);
+        // dd($user);
+
+        return view('user', ['user' => $user]);
 });
 Route::get('/test', function(){
     
