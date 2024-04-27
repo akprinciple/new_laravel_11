@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\user_list;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
+use App\Models\users;
 
 use function Pest\Laravel\get;
 
@@ -18,37 +20,21 @@ Route::get('/contact', function(){
     return view('contact');
 });
 Route::get('/users', function ()  {
-    return view('users', [
-        'users' =>[
-            [
-                'id' => 1,
-                'name' => 'Akeem',
-                'age'=> 10
-            ],
-            [
-                'id'=>2,
-                'name' => 'Olayiwola',
-                'age' =>   20
-            ]
-        ]
-            ]);
+    $users = users::all();
+    // dd($users);
+    return view('users', ['users'=> $users]);
 });
 Route::get('/user/{id}', function ($id)  {
-    $users = [
-        [
-            'id' => 1,
-            'name' => 'Akeem',
-            'age'=> 10
-        ],
-        [
-            'id'=>2,
-            'name' => 'Olayiwola',
-            'age' =>   20
-        ]
-        ];
+    
         // dd($id);
-        
-        $user = Arr::first($users, fn($user) => $user['id'] == $id);
+        // This is for fetching from a wrtten array and not database
+        // $user = Arr::first(users::all(), fn($user) => $user['id'] == $id);
+
+        $user = users::find($id);
+
+        if (! $user) {
+           abort(404);
+        }
         // dd($user);
 
         return view('user', ['user' => $user]);
